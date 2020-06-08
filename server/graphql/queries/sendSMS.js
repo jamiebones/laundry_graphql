@@ -1,0 +1,131 @@
+const graphql = require("graphql");
+const { GraphQLString, GraphQLList } = graphql;
+const axios = require("axios").default;
+const { SMSType } = require("../graphqlTypes/smsType");
+const Customer = require("../../models/customer");
+const {
+  allCustomers,
+  alldebtorCustomers,
+  debtorsOwingMoreThan5K,
+  customersNotWashedForAWhile,
+  payingCustomers,
+} = require("./customerTypeQueries");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const capitalizeFirstLetter = (word) => {
+  if (word && word.length > 0) {
+    let capWord = word[0].toUpperCase();
+    capWord = capWord + word.substr(1);
+    return capWord;
+  }
+};
+
+const smsQueries = {
+  sendMessage: {
+    type: new GraphQLList(SMSType),
+    args: {
+      message: { type: GraphQLString },
+      customerType: { type: GraphQLString },
+      returnType: { type: GraphQLString },
+    },
+    async resolve(parent, args) {
+      const { message, customerType, returnType } = args;
+      let api;
+      let apiUrl = process.env.sms_api;
+      const token = process.env.api_token;
+      const from = "Slyvan Care Laundry";
+
+      let returnObj;
+      switch (customerType) {
+        case "1":
+          const customers = await allCustomers();
+          returnObj = _sendCustomMessage({
+            message: message,
+            customerArray: customers,
+            endingMessage: false,
+          });
+          break;
+        case "2":
+          const customersOwing = await alldebtorCustomers();
+
+          returnObj = _sendCustomMessage({
+            message: message,
+            customerArray: customersOwing,
+            endingMessage: true,
+          });
+          break;
+        case "3":
+          const custOwingMoreThan5k = await debtorsOwingMoreThan5K();
+          returnObj = _sendCustomMessage({
+            message: message,
+            customerArray: custOwingMoreThan5k,
+            endingMessage: true,
+          });
+          break;
+        case "4":
+          const custNotWashedForAWhile = await customersNotWashedForAWhile();
+          returnObj = _sendCustomMessage({
+            message: message,
+            customerArray: custNotWashedForAWhile,
+            endingMessage: false,
+          });
+          break;
+        case "5":
+          const payingCust = await payingCustomers();
+          totalSent = _sendCustomMessage({
+            message: message,
+            customerArray: payingCust,
+            endingMessage: false,
+          });
+          returnObj;
+          break;
+
+        default:
+          break;
+      }
+
+      if (returnType == "1") {
+        //1 is message sent
+        const msgCount = returnObj.count.toString();
+        return [{ msg: msgCount }];
+      } else {
+        //2 is the message count
+        const arrayMessage = returnObj.messageArray;
+        return arrayMessage;
+      }
+    },
+  },
+};
+
+const _sendCustomMessage = ({ message, customerArray, endingMessage }) => {
+  let msgSent = 0;
+  let msgArray = [];
+  for (let i = 0; i < customerArray.length; i++) {
+    let customer = customerArray[i];
+    const name = customer.name && customer.name.split(" ")[0];
+    const title = customer.title;
+    const contact = (customer.contact && customer.contact[0]) || 0;
+    if (contact == 0) continue;
+    let msg = `Hello ${title} ${
+      name && capitalizeFirstLetter(name)
+    }, ${message}`;
+    if (endingMessage) {
+      //append how much they are owing here
+      const laundry = customer.laundryAmount;
+      const payment = customer.paymentMade;
+      const balance = laundry - payment;
+      msg += ` balance: ${balance}`;
+    }
+    //api = `${apiUrl}?api_token=${token}&from=${from}&to=${contact}&body=${msg}&dnd=2`;
+    let obj = {
+      msg
+    }
+    msgArray.push(obj);
+    //await axios.post(api);
+    msgSent++;
+  }
+  return { count: msgSent, messageArray: msgArray };
+};
+
+module.exports = smsQueries;

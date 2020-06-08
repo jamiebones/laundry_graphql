@@ -1,5 +1,5 @@
 const graphql = require("graphql");
-const { GraphQLNonNull, GraphQLString, GraphQLList, GraphQLID } = graphql;
+const { GraphQLString, GraphQLList,  } = graphql;
 
 const BankMoney = require("../../models/bankMoney");
 const { BankMoneyType } = require("../graphqlTypes/bankMoneyType");
@@ -22,6 +22,7 @@ const bankMoneyQueries = {
   getTotalBankMoney: {
     type: new GraphQLList(BankMoneyType),
     async resolve(parent, args) {
+      console.log('hi here')
       const moneyInBank = await BankMoney.find({}).sort({ date: -1 });
       return moneyInBank;
     }

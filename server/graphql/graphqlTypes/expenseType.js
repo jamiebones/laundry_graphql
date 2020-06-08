@@ -1,5 +1,5 @@
 const graphql = require("graphql");
-const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLFloat } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLID,  } = graphql;
 const { GraphQLDateTime } = require("graphql-iso-date");
 
 const ExpenseType = new GraphQLObjectType({

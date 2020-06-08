@@ -41,7 +41,7 @@ const ViewClothesCollected = props => {
 
   useEffect(() => {
     if (filterResult.data) {
-      console.log(filterResult.data);
+  
       setLaundryState(filterResult.data.getLaundryCollectedOrNotByDate);
       setDataViewing(
         `viewing data from ${moment(startDate).format(

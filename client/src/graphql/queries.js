@@ -194,6 +194,22 @@ const Get_Debtors = gql`
   }
 `;
 
+const Send_BulkMessage = gql`
+  query sendBulkSms(
+    $message: String!
+    $customerType: String!
+    $returnType: String!
+  ) {
+    sendMessage(
+      message: $message
+      customerType: $customerType
+      returnType: $returnType
+    ) {
+      msg
+    }
+  }
+`;
+
 //
 
 const expense_laundry_details = gql`
@@ -218,6 +234,7 @@ const expense_laundry_details = gql`
 `;
 
 export {
+  Send_BulkMessage,
   findCustomersByName,
   getCustomersLaundry,
   Customer_payment,

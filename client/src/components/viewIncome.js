@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery, useLazyQuery } from "@apollo/react-hooks";
 import { AllIncome, Income_By_Date } from "../graphql/queries";
 import FilterDate from "./filterDateComponent";
-import { SumTotal, FormatMoney } from "../module/utility";
+import { SumTotal, } from "../module/utility";
 import moment from "moment";
 import { _ } from "underscore";
 

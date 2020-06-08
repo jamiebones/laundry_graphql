@@ -30,6 +30,7 @@ import AddBankMoney from "./components/saveBankMoney";
 import ViewBankMoney from "./components/viewBankMoney";
 import Debtors from "./components/getDebtors";
 import ViewExpensesLaundryMade from "./components/viewExpenseLaundryMade";
+import SendBulkSms from "./components/sendBulkSms";
 
 // apollo client setup
 const client = new ApolloClient({
@@ -101,6 +102,11 @@ const App = (props) => {
                       <Route
                         component={ViewExpensesLaundryMade}
                         path="/view_expense_monthly"
+                      />
+
+                      <Route
+                        component={SendBulkSms}
+                        path="/send_sms"
                       />
                     </div>
                   </div>

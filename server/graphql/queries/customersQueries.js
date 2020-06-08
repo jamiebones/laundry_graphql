@@ -9,6 +9,7 @@ const {
 const Customer = require("../../models/customer");
 const { CustomerType } = require("../graphqlTypes/customerType");
 
+
 const customerQueries = {
   customers: {
     type: new GraphQLList(CustomerType),
@@ -24,6 +25,7 @@ const customerQueries = {
     },
     async resolve(parent, args) {
       const queryName = args.name;
+     
       try {
         const customerData = await Customer.find({
           name: { $regex: queryName, $options: "i" }

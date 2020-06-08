@@ -183,6 +183,14 @@ const Navbar = () => {
                         Details
                       </NavLink>
                     </li>
+
+                    <li className="nav-item">
+                      <NavLink exact to="/send_sms" className="nav-link">
+                        Send Sms
+                      </NavLink>
+                    </li>
+
+
                   </ul>
                 </div>
               </nav>
