@@ -6,10 +6,13 @@ import { SumTotal, FormatMoney } from "../module/utility";
 import moment from "moment";
 import { _ } from "underscore";
 
-const ViewExpense = props => {
+const ViewExpense = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [dataViewing, setDataViewing] = useState("");
+
+  const [filterQuery, setFilterQuery] = useState();
+  const [filterAmount, setFilterAmount] = useState();
 
   const [expense, setExpense] = useState([]);
 
@@ -17,11 +20,11 @@ const ViewExpense = props => {
 
   const [getFilterDate, filterResult] = useLazyQuery(Expense_By_Date);
 
-  const upDateStart = date => {
+  const upDateStart = (date) => {
     setStartDate(date);
   };
 
-  const upDateEnd = date => {
+  const upDateEnd = (date) => {
     setEndDate(date);
   };
 
@@ -49,9 +52,35 @@ const ViewExpense = props => {
     await getFilterDate({
       variables: {
         fromDate: startDate,
-        endDate: endDate
-      }
+        endDate: endDate,
+      },
     });
+  };
+
+  useEffect(() => {
+    const query = filterQuery;
+    if (query && query.length) {
+      let totalAmount = 0;
+      setFilterAmount(0);
+      const tds = document.querySelectorAll("#expense td");
+      for (let i = tds.length - 1; i >= 0; i--) {
+        const td = tds[i];
+        const p = td.textContent;
+        if (p.toLowerCase().indexOf(query.toLowerCase()) != -1) {
+          td.parentNode.setAttribute("style", "display: `table-row`");
+          const amount = td.parentNode.lastElementChild.innerText;
+          totalAmount += +amount;
+          setFilterAmount(totalAmount);
+        } else {
+          td.parentNode.setAttribute("style", "display: none");
+        }
+      }
+    }
+  }, [filterQuery]);
+
+  const filterTableData = (e) => {
+    const filter = e.target.value.trim();
+    setFilterQuery(filter);
   };
 
   if (allResult.loading) return <p>Loading ...</p>;
@@ -76,7 +105,15 @@ const ViewExpense = props => {
                 />
               </div>
               <div>
-                <table className="table table-striped">
+                <input
+                  type="text"
+                  placeholder="filter expense data"
+                  className="form-control"
+                  style={{width: 400+ "px"}}
+                  onChange={filterTableData}
+                />
+                <p>Filter Amount: {filterAmount}</p>
+                <table className="table table-striped" id="expense">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -96,7 +133,9 @@ const ViewExpense = props => {
                           <td>
                             <p>{moment(date).format("dddd, MMMM Do YYYY")}</p>
                           </td>
-                          <td>{amount}</td>
+                          <td>
+                            <p> {amount}</p>
+                          </td>
                         </tr>
                       );
                     })}

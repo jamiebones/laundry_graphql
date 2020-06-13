@@ -112,7 +112,7 @@ const SendBulkSms = (props) => {
         </div>
 
         <div className="col-md-5 offset-md-1">
-          {msgSent.length > 0 &&
+          {msgSent && msgSent.length > 0 &&
             msgSent.map(({ msg }, index) => {
               return <p key={index}>{msg}</p>;
             })}

@@ -31,10 +31,7 @@ const smsQueries = {
     },
     async resolve(parent, args) {
       const { message, customerType, returnType } = args;
-      let api;
-      let apiUrl = process.env.sms_api;
-      const token = process.env.api_token;
-      const from = "Slyvan Care Laundry";
+    
 
       let returnObj;
       switch (customerType) {
@@ -98,9 +95,13 @@ const smsQueries = {
   },
 };
 
-const _sendCustomMessage = ({ message, customerArray, endingMessage }) => {
+const _sendCustomMessage = async ({ message, customerArray, endingMessage }) => {
   let msgSent = 0;
   let msgArray = [];
+  let api;
+  let apiUrl = process.env.sms_api;
+  const token = process.env.api_token;
+  const from = "Eco-Slyvan Laundry";
   for (let i = 0; i < customerArray.length; i++) {
     let customer = customerArray[i];
     const name = customer.name && customer.name.split(" ")[0];
@@ -117,12 +118,12 @@ const _sendCustomMessage = ({ message, customerArray, endingMessage }) => {
       const balance = laundry - payment;
       msg += ` balance: ${balance}`;
     }
-    //api = `${apiUrl}?api_token=${token}&from=${from}&to=${contact}&body=${msg}&dnd=2`;
+    api = `${apiUrl}?api_token=${token}&from=${from}&to=${contact}&body=${msg}&dnd=2`;
     let obj = {
       msg
     }
     msgArray.push(obj);
-    //await axios.post(api);
+    await axios.post(api);
     msgSent++;
   }
   return { count: msgSent, messageArray: msgArray };

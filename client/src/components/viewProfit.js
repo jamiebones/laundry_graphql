@@ -36,7 +36,7 @@ const ProfitStyles = styled.div`
   }
 `;
 
-const ViewProfit = props => {
+const ViewProfit = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [dataViewing, setDataViewing] = useState("");
@@ -47,11 +47,11 @@ const ViewProfit = props => {
 
   const [getFilterDate, filterResult] = useLazyQuery(Profit_By_Date);
 
-  const upDateStart = date => {
+  const upDateStart = (date) => {
     setStartDate(date);
   };
 
-  const upDateEnd = date => {
+  const upDateEnd = (date) => {
     setEndDate(date);
   };
 
@@ -79,8 +79,8 @@ const ViewProfit = props => {
     await getFilterDate({
       variables: {
         fromDate: startDate,
-        endDate: endDate
-      }
+        endDate: endDate,
+      },
     });
   };
 
@@ -135,7 +135,7 @@ const ViewProfit = props => {
                       <p className="profitAmount">
                         &#8358;
                         {FormatMoney(
-                          +income.bankMoney + +income.income - +income.expense
+                          +income.income - +income.bankMoney - +income.expense
                         )}
                       </p>
                     </div>
