@@ -31,7 +31,6 @@ const smsQueries = {
     },
     async resolve(parent, args) {
       const { message, customerType, returnType } = args;
-    
 
       let returnObj;
       switch (customerType) {
@@ -45,7 +44,6 @@ const smsQueries = {
           break;
         case "2":
           const customersOwing = await alldebtorCustomers();
-
           returnObj = _sendCustomMessage({
             message: message,
             customerArray: customersOwing,
@@ -70,12 +68,11 @@ const smsQueries = {
           break;
         case "5":
           const payingCust = await payingCustomers();
-          totalSent = _sendCustomMessage({
+          returnObj = _sendCustomMessage({
             message: message,
             customerArray: payingCust,
             endingMessage: false,
           });
-          returnObj;
           break;
 
         default:
@@ -84,20 +81,28 @@ const smsQueries = {
 
       if (returnType == "1") {
         //1 is message sent
-        const msgCount = returnObj.count.toString();
-        return [{ msg: msgCount }];
+        const sendArrayApi = returnObj.sendArray;
+        //loop through and send
+        let counter = 0;
+        for (let i = 0; i < sendArrayApi.length; i++) {
+          const api = sendArrayApi[i];
+          await axios.post(api);
+          counter++;
+        }
+        return [{ msg: counter.toString() }];
       } else {
-        //2 is the message count
+        //2 is the message sample
         const arrayMessage = returnObj.messageArray;
+        console.log(arrayMessage);
         return arrayMessage;
       }
     },
   },
 };
 
-const _sendCustomMessage = async ({ message, customerArray, endingMessage }) => {
-  let msgSent = 0;
+const _sendCustomMessage = ({ message, customerArray, endingMessage }) => {
   let msgArray = [];
+  let sendArray = [];
   let api;
   let apiUrl = process.env.sms_api;
   const token = process.env.api_token;
@@ -120,13 +125,12 @@ const _sendCustomMessage = async ({ message, customerArray, endingMessage }) => 
     }
     api = `${apiUrl}?api_token=${token}&from=${from}&to=${contact}&body=${msg}&dnd=2`;
     let obj = {
-      msg
-    }
+      msg,
+    };
     msgArray.push(obj);
-    await axios.post(api);
-    msgSent++;
+    sendArray.push(api);
   }
-  return { count: msgSent, messageArray: msgArray };
+  return { messageArray: msgArray, sendArray: sendArray };
 };
 
 module.exports = smsQueries;

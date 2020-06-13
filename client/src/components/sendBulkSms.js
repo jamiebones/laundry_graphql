@@ -40,6 +40,12 @@ const SendBulkSms = (props) => {
   };
 
   const submitHandler = () => {
+    const confirmSend = confirm(
+      "Are you sure you want to send an sms to the selected customers"
+    );
+    if (!confirmSend) {
+      return;
+    }
     sendMessageToCustomers({
       variables: {
         message: message,
@@ -101,7 +107,7 @@ const SendBulkSms = (props) => {
             send sms
           </button>
 
-          <div style={{float: "right"}}>
+          <div style={{ float: "right" }}>
             <button
               className="btn btn-info text-center"
               onClick={viewMessageSample}
@@ -112,7 +118,8 @@ const SendBulkSms = (props) => {
         </div>
 
         <div className="col-md-5 offset-md-1">
-          {msgSent && msgSent.length > 0 &&
+          {msgSent &&
+            msgSent.length > 0 &&
             msgSent.map(({ msg }, index) => {
               return <p key={index}>{msg}</p>;
             })}
