@@ -40,7 +40,7 @@ const SendBulkSms = (props) => {
   };
 
   const submitHandler = () => {
-    const confirmSend = confirm(
+    const confirmSend = window.confirm(
       "Are you sure you want to send an sms to the selected customers"
     );
     if (!confirmSend) {
