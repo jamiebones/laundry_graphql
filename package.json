@@ -24,7 +24,8 @@
     "nodemon": "^1.19.4"
   },
   "scripts": {
-    "heroku-postbuild": "npm install && node server/app.js && npm run start",
+    "heroku-prebuild": "npm run start",
+    "heroku-postbuild": "node server/app.js",
     "client-install": "cd ./client && npm install",
     "start": "cd client && npm install --only=dev && npm install && npm run build",
     "client-build": "cd ./client && npm install && react-scripts build",

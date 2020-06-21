@@ -9,7 +9,7 @@ const store = require("store");
 
 const cache = new InMemoryCache();
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 5000;
 
 console.log(port);
 
