@@ -24,7 +24,7 @@
     "nodemon": "^1.19.4"
   },
   "scripts": {
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build && npm run deploy-production",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build && cd server && npm install && npm run deploy-production",
     "client-install": "cd ./client && npm install",
     "start": "cross-env NODE_ENV=production node server/app.js",
     "client-build": "cd ./client && npm install && react-scripts build",
