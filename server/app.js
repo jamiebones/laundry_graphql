@@ -10,9 +10,9 @@ const cookieParser = require('cookie-parser')
 const route = require("./routes/login");
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
- // origin: "https://laundryshop.herokuapp.com" ,//change with your own client URL
- // credentials: true
+  //origin: 'http://localhost:3000',
+ origin: "https://laundryshop.herokuapp.com" ,//change with your own client URL
+ credentials: true
 }
 
 
