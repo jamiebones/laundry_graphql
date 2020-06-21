@@ -29,7 +29,11 @@ const smsQueries = {
       customerType: { type: GraphQLString },
       returnType: { type: GraphQLString },
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context ) {
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       const { message, customerType, returnType } = args;
 
       let returnObj;
@@ -123,7 +127,7 @@ const _sendCustomMessage = ({ message, customerArray, endingMessage }) => {
       const balance = laundry - payment;
       msg += ` balance: ${balance}`;
     }
-    api = `${apiUrl}?api_token=${token}&from=${from}&to=${contact}&body=${msg}&dnd=2`;
+    api = `${apiUrl}?api_token=${token}&from=${from}&to=${contact}&body=${msg}&dnd=4`;
     let obj = {
       msg,
     };

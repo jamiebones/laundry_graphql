@@ -45,7 +45,11 @@ const Mutation = {
     args: {
       customers: { type: GraphQLString }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context ) {
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       try {
         //the customers is coming in as a JSON string so we need to parse it
         const parsedCustomers = JSON.parse(args.customers);

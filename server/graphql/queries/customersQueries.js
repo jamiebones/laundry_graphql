@@ -13,9 +13,16 @@ const { CustomerType } = require("../graphqlTypes/customerType");
 const customerQueries = {
   customers: {
     type: new GraphQLList(CustomerType),
-    resolve(parent, args) {
+    resolve(parent, args, context ) {
       //code to get data from the database
-      return Customer.find();
+      const { req } = context;
+      if (req.isAuth ){
+        return Customer.find();
+      }
+      else{
+        throw new Error("please login")
+      }
+      
     }
   },
   findCustomersByName: {
@@ -23,17 +30,25 @@ const customerQueries = {
     args: {
       name: { type: new GraphQLNonNull(GraphQLString) }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context ) {
       const queryName = args.name;
-     
-      try {
-        const customerData = await Customer.find({
-          name: { $regex: queryName, $options: "i" }
-        });
-        return customerData;
-      } catch (error) {
-        console.log(error);
+
+      const { req } = context;
+      if (req.isAuth ){
+        try {
+          const customerData = await Customer.find({
+            name: { $regex: queryName, $options: "i" }
+          });
+          return customerData;
+        } catch (error) {
+          console.log(error);
+        }
       }
+      else{
+        throw new Error("please login")
+      }
+     
+      
     }
   }
 };

@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
-const config = require("../../config/keys");
-
-const secretKey = config.keys;
+const { secretOrKey } = require("./config/keys");
 
 module.exports = (req, res, next) => {
-  const authHeader = req.get("authorization");
+  //const token = req.headers.authorization || "";
+  const authHeader = req.headers.authorization || ''
+  console.log(`auth header is ${authHeader}`);
   if (!authHeader) {
     req.isAuth = false;
     return next();
@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
   }
   let decodedToken;
   try {
-    decodedToken = jwt.verify(token, secretKey);
+    decodedToken = jwt.verify(token, secretOrKey);
   } catch (error) {
     req.isAuth = false;
     return next();
@@ -27,6 +27,6 @@ module.exports = (req, res, next) => {
     return next();
   }
   req.isAuth = true;
-  req.userId = decodedToken.userId;
+  req.userId = decodedToken._id;
   next();
 };

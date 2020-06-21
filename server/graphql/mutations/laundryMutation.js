@@ -12,10 +12,14 @@ const Mutation = {
       number: { type: GraphQLString },
       date: { type: GraphQLString },
       customerId: { type: GraphQLString },
-      clothesCollected: { type: GraphQLBoolean }
+      clothesCollected: { type: GraphQLBoolean },
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context) {
       //using mongoose to save the data here
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       try {
         //check if the id is a valid id
         const { customerId, amount, date, clothes, number } = args;
@@ -25,19 +29,19 @@ const Mutation = {
           date,
           clothes,
           number,
-          clothesCollected: false
+          clothesCollected: false,
         });
         return newLaundry.save();
       } catch (error) {
         console.log(error);
         throw error;
       }
-    }
+    },
   },
   markAsCollected: {
     type: LaundryType,
     args: {
-      laundryId: { type: GraphQLString }
+      laundryId: { type: GraphQLString },
     },
     async resolve(parent, args) {
       //using mongoose to save the data here
@@ -48,7 +52,7 @@ const Mutation = {
         const laundry = await Laundry.findOneAndUpdate(
           { _id: laundryId },
           {
-            clothesCollected: true
+            clothesCollected: true,
           }
         );
         return laundry;
@@ -56,8 +60,8 @@ const Mutation = {
         console.log(error);
         throw error;
       }
-    }
-  }
+    },
+  },
 };
 
 module.exports = Mutation;

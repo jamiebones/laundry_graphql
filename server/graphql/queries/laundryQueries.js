@@ -18,8 +18,12 @@ const LaundryQueries = {
       fromDate: { type: GraphQLString },
       endDate: { type: new GraphQLNonNull(GraphQLString) }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context ) {
       //code to get the date we are searching from
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       const { fromDate, endDate } = args;
       const laundry = Laundry.find({
         date: { $gte: fromDate, $lt: endDate }
@@ -32,7 +36,11 @@ const LaundryQueries = {
     args: {
       customerId: { type: GraphQLString }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context ) {
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       const { customerId } = args;
       const customerLaundry = await Laundry.find({
         customerId: customerId
@@ -45,7 +53,11 @@ const LaundryQueries = {
     args: {
       clothesCollected: { type: GraphQLBoolean }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context ) {
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       const { clothesCollected } = args;
       const customersLaundry = await Laundry.find({
         clothesCollected: clothesCollected
@@ -60,8 +72,12 @@ const LaundryQueries = {
       endDate: { type: GraphQLString },
       clothesCollected: { type: GraphQLBoolean }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context) {
       //code to get the date we are searching from
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       const { fromDate, endDate, clothesCollected } = args;
       const laundry = Laundry.find({
         clothesCollected: clothesCollected,

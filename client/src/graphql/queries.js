@@ -112,6 +112,19 @@ const Profit_By_Date = gql`
   }
 `;
 
+const Balance_Money_Left = gql`
+  query balanceMoney($fromDate: String!, $endDate: String) {
+    getBalanceMoneyLeft(fromDate: $fromDate, endDate: $endDate) {
+      income
+      expense
+      bankMoney
+    }
+  }
+`;
+
+
+
+
 const All_Time_Profit = gql`
   query allTimeProfit {
     getProfitofAllTime {
@@ -233,6 +246,16 @@ const expense_laundry_details = gql`
   }
 `;
 
+const Login = gql`
+  query login($email: String, $password: String) {
+    login(email: $email, password: $password) {
+      userId
+      token
+      email
+    }
+  }
+`;
+
 export {
   Send_BulkMessage,
   findCustomersByName,
@@ -251,4 +274,6 @@ export {
   All_Time_BankMoney,
   Get_Debtors,
   expense_laundry_details,
+  Balance_Money_Left,
+  Login
 };

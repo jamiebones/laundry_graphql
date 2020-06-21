@@ -11,8 +11,12 @@ const Mutation = {
       amount: { type: GraphQLString },
       date: { type: GraphQLString }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, context ) {
       //using mongoose to save the data here
+      const { req } = context;
+      if (req.isAuth == false) {
+        throw new Error("please login");
+      }
       try {
         const { amount, date } = args;
         let newBankMoney = await new BankMoney({

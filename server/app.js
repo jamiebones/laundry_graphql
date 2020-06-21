@@ -3,24 +3,35 @@ const graphqlHTTP = require("express-graphql");
 const schema = require("./schema/schema");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const morgan = require("morgan");
+const path = require("path");
+const isAuth = require("./is-auth");
+const cookieParser = require('cookie-parser')
+const route = require("./routes/login");
 
-//const isAuth = require("./middleware/is-auth");
-const keys = require("./config/keys");
-const mongoURI = keys.mongoURI;
-//const prodMongoURI = keys.mongoProdURI;
+const corsOptions = {
+  origin: 'http://localhost:3000', //change with your own client URL
+  credentials: true
+}
+
 
 const app = express();
+app.use(morgan("combined"));
+app.use(cors(corsOptions));
+//app.use(express.urlencoded({ extended: true }));
 
-app.use(cors());
-
-
-mongoose.connect('mongodb+srv://jamiebones:blazing147@laundryshop-2y3sx.mongodb.net/laundry', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log("mongo db connected remotely");
-})
-.catch((err) => console.log(err));
+mongoose
+  .connect(
+    "mongodb+srv://jamiebones:blazing147@laundryshop-2y3sx.mongodb.net/laundry",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => {
+    console.log("mongo db connected remotely");
+  })
+  .catch((err) => console.log(err));
 
 // mongoose
 //   .connect(mongoURI, {
@@ -32,14 +43,22 @@ mongoose.connect('mongodb+srv://jamiebones:blazing147@laundryshop-2y3sx.mongodb.
 //     console.log("mongo db connected");
 //   })
 //   .catch((err) => console.log(err));
-
-app.use(
-  "/graphql",
+app.use(isAuth);
+app.use(cookieParser())
+app.use("/graphql", (req, res ) =>
   graphqlHTTP({
     schema,
     graphiql: true,
-  })
+    context: { req }
+  })(req, res)
 );
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../client/build/", "index.html"));
+  });
+}
 
 app.listen(4000, () => {
   console.log("app listening on port 4000");

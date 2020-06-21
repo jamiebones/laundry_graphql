@@ -88,6 +88,17 @@ const saveBankMoney = gql`
   }
 `;
 
+const registerUser = gql`
+  mutation registerAccount($email: String!, $password: String) {
+    registerAccount(email: $email, passwword: $password) {
+      email
+      password
+    }
+  }
+`;
+
+
+
 export {
   saveCustomersDetails,
   saveManyCustomersDetails,
@@ -95,5 +106,7 @@ export {
   saveLaundryDetails,
   saveExpenseDetails,
   collectClothes,
-  saveBankMoney
+  saveBankMoney,
+  registerUser,
+  
 };

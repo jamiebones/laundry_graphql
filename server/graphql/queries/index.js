@@ -6,6 +6,7 @@ const BankMoneyQueries = require("./bankMoneyQueries");
 const DebtorQueries = require("./debtorQueries");
 const ExpenseLaundryQueries = require("./expenseLaundryQueries");
 const SmsQueries = require("./sendSMS");
+const AuthQueries = require("./authQueries")
 
 module.exports = {
   ...CustomerQueries,
@@ -15,6 +16,7 @@ module.exports = {
   ...BankMoneyQueries,
   ...DebtorQueries,
   ...ExpenseLaundryQueries,
-  ...SmsQueries
+  ...SmsQueries,
+  ...AuthQueries
 
 };
