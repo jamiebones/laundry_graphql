@@ -24,7 +24,7 @@
     "nodemon": "^1.19.4"
   },
   "scripts": {
-    "heroku-postbuild": "node server/app.js && cd client && npm install --only=dev && npm install && npm run build",
+    "heroku-postbuild": "npm run deploy && cd client && npm install --only=dev && npm install && npm run build",
     "client-install": "cd ./client && npm install",
     "start": "cross-env NODE_ENV=production node server/app.js",
     "client-build": "cd ./client && npm install && react-scripts build",
@@ -34,7 +34,7 @@
     "client": "npm start --prefix ./client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "debug": "concurrently \"npm run debugServer\" \"npm run client\"",
-    "deploy": "npm run server-build cross-env NODE_ENV=production forever start --minUptime 2000 --spinSleepTime 5 server/app.js"
+    "deploy": "cross-env NODE_ENV=production forever start --minUptime 2000 --spinSleepTime 5 server/app.js"
   },
   "author": "James Oshomah",
   "engines": {
