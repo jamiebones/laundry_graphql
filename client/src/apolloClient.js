@@ -13,7 +13,11 @@ const port = process.env.PORT || 4000;
 
 console.log(port);
 
-const httpLink = new HttpLink({ uri: `http://localhost:${port}/graphql` });
+let httpLink = new HttpLink({ uri: `http://localhost:${port}/graphql` });
+
+if (process.env.NODE_ENV === "production"){
+   httpLink = new HttpLink({ uri: `http://localhost/graphql` });
+}
 
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
