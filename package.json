@@ -24,9 +24,9 @@
     "nodemon": "^1.19.4"
   },
   "scripts": {
-    "heroku-postbuild": "npm install && forever start --minUptime 2000 --spinSleepTime 5 server/app.js && cd client && npm install --only=dev && npm install && npm run build",
+    "heroku-postbuild": "npm install && node server/app.js && npm run start",
     "client-install": "cd ./client && npm install",
-    "start": "node server/app.js",
+    "start": "cd client && npm install --only=dev && npm install && npm run build",
     "client-build": "cd ./client && npm install && react-scripts build",
     "server-build": "cd ./server && npm install",
     "server": "nodemon app.js",
