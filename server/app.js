@@ -18,7 +18,7 @@ const corsOptions = {
 
 const app = express();
 app.use(morgan("combined"));
-app.use(cors(corsOptions));
+app.use(cors());
 //app.use(express.urlencoded({ extended: true }));
 
 mongoose
