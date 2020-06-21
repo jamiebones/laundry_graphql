@@ -9,16 +9,23 @@ const isAuth = require("./is-auth");
 const cookieParser = require('cookie-parser')
 const route = require("./routes/login");
 
-const corsOptions = {
-  //origin: 'http://localhost:3000',
- origin: "https://laundryshop.herokuapp.com" ,//change with your own client URL
- credentials: true
-}
 
+
+var whitelist = ['https://laundryshop.herokuapp.com', 'http://localhost:3000']
+var corsOptions = {
+  credentials: true,
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 const app = express();
 app.use(morgan("combined"));
-app.use(cors());
+app.use(cors(corsOptions));
 //app.use(express.urlencoded({ extended: true }));
 
 mongoose
