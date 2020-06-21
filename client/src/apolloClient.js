@@ -9,7 +9,11 @@ const store = require("store");
 
 const cache = new InMemoryCache();
 
-const httpLink = new HttpLink({ uri: "http://localhost:4000/graphql" });
+const port = process.env.PORT || 4000;
+
+console.log(port);
+
+const httpLink = new HttpLink({ uri: `http://localhost:${port}/graphql` });
 
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
