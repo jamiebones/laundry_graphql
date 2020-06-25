@@ -6,22 +6,25 @@ const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
 const isAuth = require("./is-auth");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 const route = require("./routes/login");
 
-
-
-var whitelist = ['https://laundryshop.herokuapp.com', 'http://localhost:3000']
+var whitelist = [
+  "https://laundryshop.herokuapp.com",
+  "http://localhost:3000",
+  "https://www.bulksmsnigeria.com/api/v1/sms/create",
+  'https://www.bulksmsnigeria.com'
+];
 var corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error("Not allowed by CORS"));
     }
-  }
-}
+  },
+};
 
 const app = express();
 app.use(morgan("combined"));
@@ -52,17 +55,17 @@ mongoose
 //   })
 //   .catch((err) => console.log(err));
 app.use(isAuth);
-app.use(cookieParser())
-app.use("/graphql", (req, res ) =>
+app.use(cookieParser());
+app.use("/graphql", (req, res) =>
   graphqlHTTP({
     schema,
     graphiql: true,
-    context: { req }
+    context: { req },
   })(req, res)
 );
 
 if (process.env.NODE_ENV === "production") {
-  console.log("production mode")
+  console.log("production mode");
   app.use(express.static(path.join(__dirname, "../client/build")));
   app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "../client/build/", "index.html"));
@@ -71,6 +74,6 @@ if (process.env.NODE_ENV === "production") {
 
 const port = process.env.PORT || 4000;
 
-app.listen(port , () => {
+app.listen(port, () => {
   console.log(`app listening on port ${port}`);
 });
