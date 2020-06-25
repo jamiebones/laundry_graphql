@@ -90,6 +90,7 @@ const smsQueries = {
         let counter = 0;
         for (let i = 0; i < sendArrayApi.length; i++) {
           const api = sendArrayApi[i];
+          console.log(`api is ${api}`);
           await axios.post(api);
           counter++;
         }
