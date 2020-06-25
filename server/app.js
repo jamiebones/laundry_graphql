@@ -13,7 +13,8 @@ var whitelist = [
   "https://laundryshop.herokuapp.com",
   "http://localhost:3000",
   "https://www.bulksmsnigeria.com/api/v1/sms/create",
-  'https://www.bulksmsnigeria.com'
+  'https://www.bulksmsnigeria.com',
+  '127.0.0.1:80'
 ];
 var corsOptions = {
   credentials: true,
