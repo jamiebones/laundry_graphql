@@ -9,12 +9,13 @@ const isAuth = require("./is-auth");
 const cookieParser = require("cookie-parser");
 const route = require("./routes/login");
 
+
 var whitelist = [
   "https://laundryshop.herokuapp.com",
   "http://localhost:3000",
   "https://www.bulksmsnigeria.com/api/v1/sms/create",
   'https://www.bulksmsnigeria.com',
-  '127.0.0.1:80'
+
 ];
 var corsOptions = {
   credentials: true,
@@ -27,7 +28,11 @@ var corsOptions = {
   },
 };
 
+var secure =  require("express-force-https");
+
+
 const app = express();
+app.use(secure);
 app.use(morgan("combined"));
 app.use(cors(corsOptions));
 //app.use(express.urlencoded({ extended: true }));
