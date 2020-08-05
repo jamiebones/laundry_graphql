@@ -10,7 +10,7 @@ import moment from "moment";
 
 const SaveIncomeStyles = styled.div``;
 
-const SaveIncome = props => {
+const SaveIncome = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const { customerId, name } = props.location.state;
   const [amount, setAmount] = useState(null);
@@ -19,10 +19,10 @@ const SaveIncome = props => {
 
   const [
     saveLaundry,
-    { loading: mutationLoading, error: mutationError }
+    { loading: mutationLoading, error: mutationError },
   ] = useMutation(saveLaundryDetails);
 
-  const handleChange = date => {
+  const handleChange = (date) => {
     setStartDate(date);
   };
 
@@ -30,15 +30,15 @@ const SaveIncome = props => {
     setAmount(maskedvalue);
   };
 
-  const handleDescriptionChange = e => {
+  const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
 
-  const handleNumberChange = e => {
+  const handleNumberChange = (e) => {
     setNumber(e.target.value);
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (number == "") return;
@@ -58,8 +58,8 @@ const SaveIncome = props => {
           date: moment(startDate).format("DD-MMM-YYYY"),
           clothes: description,
           number: number,
-          clothesCollected: false
-        }
+          clothesCollected: false,
+        },
       });
       //clear the data
       setStartDate(new Date());
@@ -74,7 +74,7 @@ const SaveIncome = props => {
   return (
     <SaveIncomeStyles>
       <div className="row">
-        <div className="offset-3 col-md-6">
+        <div className="col-sm-12 col-lg-6 offset-lg-3">
           <p>Entering clothes details for : </p>
 
           <p>Name : {name}</p>

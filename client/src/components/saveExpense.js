@@ -20,7 +20,7 @@ const SaveExpenseStyles = styled.div`
   }
 
   input:nth-child(2) {
-    width: 28%;
+    width: 50%;
   }
 
   .holding {
@@ -80,7 +80,7 @@ const SaveExpense = () => {
   return (
     <SaveExpenseStyles>
       <div className="row">
-        <div className="offset-3 col-md-6">
+        <div className="col-sm-12 col-lg-6 offset-lg-3">
           <div className="holding">
             <p className="text-center lead">Add Expenses</p>
             {loading && <p>Loading...</p>}

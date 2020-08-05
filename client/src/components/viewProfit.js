@@ -108,15 +108,13 @@ const ViewProfit = (props) => {
           </div>
         </div>
         <div className="row">
-          <div className="offset-3 col-md-6">
+          <div className="col-sm-12 col-md-6 offset-md-3">
             {!_.isEmpty(income) ? (
               <div className="profitDiv">
                 <div className="row">
-                  <div className="col-md-6">
+                  <div className="col sm-6 col-md-6">
                     <div>
                       <p>Income : </p>
-
-                      <p>Money Paid To Bank : </p>
 
                       <p>Expense :</p>
                       <hr className="hideMe" />
@@ -125,18 +123,15 @@ const ViewProfit = (props) => {
                   </div>
 
                   <div className="details">
-                    <div className="col-md-6">
+                    <div className="col-sm-6 col-md-6">
                       <p>&#8358;{income && FormatMoney(income.income)}</p>
-                      <p>&#8358;{income && FormatMoney(income.bankMoney)}</p>
                       <p>&#8358;{income && FormatMoney(income.expense)}</p>
 
                       <hr />
 
                       <p className="profitAmount">
                         &#8358;
-                        {FormatMoney(
-                          +income.income - +income.bankMoney - +income.expense
-                        )}
+                        {FormatMoney(+income.income - +income.expense)}
                       </p>
                     </div>
                   </div>

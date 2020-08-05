@@ -20,7 +20,7 @@ const SaveIncomeStyles = styled.div`
   }
 
   input:nth-child(2) {
-    width: 30%;
+    width: 50%;
     margin: auto;
   }
 
@@ -77,7 +77,7 @@ const SaveBankMoney = () => {
   return (
     <SaveIncomeStyles>
       <div className="row">
-        <div className="offset-3 col-md-6">
+        <div className="col-md-12 col-lg-6 offset-lg-3">
           <div className="holding text-center">
             {loading && <p>Loading...</p>}
             {error && <p>Error : {error.message}</p>}

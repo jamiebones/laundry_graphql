@@ -16,7 +16,6 @@ const IncomeType = new GraphQLObjectType({
       async resolve(parent, args) {
         //get a list of all the clothes the person has washed
         const customer = await Customer.find({ _id: parent.customerId });
-        console.log(customer);
         return customer;
       }
     }
