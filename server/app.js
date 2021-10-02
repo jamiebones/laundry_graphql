@@ -39,7 +39,7 @@ app.use(cors(corsOptions));
 
 mongoose
   .connect(
-    "mongodb+srv://jamiebones:blazing147@laundryshop-2y3sx.mongodb.net/laundry",
+    "XXXXX",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
